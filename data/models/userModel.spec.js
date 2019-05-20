@@ -6,8 +6,8 @@ const Users = require('./userModel');
 //insert, get, update, delete
 describe('User model', () => {
   //remove all the data in the table before starting and after finishing test
-  beforeAll(async () => { await db('Users').truncate() })
-  afterAll(async () => { await db('Users').truncate() });
+  beforeAll(async () => { await db('users').truncate() })
+  afterAll(async () => { await db('users').truncate() });
 
   describe('insert()', () => {
       it('should insert provided title', async () => {
@@ -20,7 +20,7 @@ describe('User model', () => {
       let test3= await Users.insert({ first:'joseph', last:'brim', phone:'554-555-5555', email:'take@me.com', password:'passed'})
       expect(test2.first).toBe('jane')
       
-      const accounts = await db('Users');
+      const accounts = await db('users');
 
       expect(accounts).toHaveLength(3);
     });
@@ -30,7 +30,7 @@ describe('User model', () => {
     it('provide user list', async () => {
       await Users.get();
 
-      const accounts = await db('Users');
+      const accounts = await db('users');
 
       expect(accounts).toHaveLength(3);
     });
@@ -68,7 +68,7 @@ describe('User model', () => {
   describe('delete()', () => {
     it('should delete a title', async () => {
       await Users.remove(2);
-      let accounts = await db('Users');
+      let accounts = await db('users');
 
       expect(accounts).toHaveLength(2);
     })
