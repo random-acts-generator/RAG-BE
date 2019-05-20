@@ -9,7 +9,8 @@ module.exports = {
   getByName,
   insert,
   update,
-  remove
+  remove,
+  loginCheck
 }
 
 
@@ -59,4 +60,10 @@ function remove(identifier) {
   return db('users')
   .where({ id: identifier })
   .del()
+}
+
+function loginCheck(em) {
+  return db('users')
+  .where({ email: em })
+  .first()
 }
