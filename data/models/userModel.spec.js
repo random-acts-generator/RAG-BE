@@ -37,29 +37,29 @@ describe('User model', () => {
   });
 
   describe('get by id', () => {
-    it('provides a single user', async () => {
+    it('provides a single user by user id', async () => {
       let user = await Users.getById(3)
       expect(user.last).toBe('brim')
     })
   })
 
   describe('get by number', () => {
-    it('provides a single user', async () => {
+    it('provides a single user by phone number', async () => {
       let user = await Users.getByNumber('225-555-5555')
       expect(user.first).toBe('john')
     })
   })
 
   describe('get by name', () => {
-    it('provides a single user', async () => {
+    it('provides a list of all users with this name', async () => {
       let user = await Users.getByName('jane', 'doe')
-      expect(user.email).toBe('test2@me.com')
+      expect(user).toHaveLength(1)
     })
   })
 
   describe('update()', () => {
     it('should update the title', async () => {
-      let update = await Users.update('2', {phone:'333-444-5656'});
+      let update = await Users.update(2, {phone:'333-444-5656'});
       console.log(update)
       expect(update.phone).toBe('333-444-5656');
     })
@@ -71,6 +71,13 @@ describe('User model', () => {
       let accounts = await db('Users');
 
       expect(accounts).toHaveLength(2);
+    })
+  })
+
+  describe('login checker', () => {
+    it('should bring back only 1 user based on the unique email identifier', async () => {
+      let account = await Users.loginCheck('take@me.com');
+      expect(account.first).toBe('joseph')
     })
   })
 });
