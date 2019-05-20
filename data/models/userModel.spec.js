@@ -6,8 +6,8 @@ const Users = require('./userModel');
 //insert, get, update, delete
 describe('User model', () => {
   //remove all the data in the table before starting and after finishing test
-  beforeAll(async () => { await db('Users').truncate() })
-  afterAll(async () => { await db('Users').truncate() });
+  beforeAll(async () => { await db('users').truncate() })
+  afterAll(async () => { await db('users').truncate() });
 
   describe('insert()', () => {
       it('should insert provided title', async () => {
@@ -20,7 +20,7 @@ describe('User model', () => {
       let test3= await Users.insert({ first:'joseph', last:'brim', phone:'554-555-5555', email:'take@me.com', password:'passed'})
       expect(test2.first).toBe('jane')
       
-      const accounts = await db('Users');
+      const accounts = await db('users');
 
       expect(accounts).toHaveLength(3);
     });
@@ -30,36 +30,36 @@ describe('User model', () => {
     it('provide user list', async () => {
       await Users.get();
 
-      const accounts = await db('Users');
+      const accounts = await db('users');
 
       expect(accounts).toHaveLength(3);
     });
   });
 
   describe('get by id', () => {
-    it('provides a single user', async () => {
+    it('provides a single user by user id', async () => {
       let user = await Users.getById(3)
       expect(user.last).toBe('brim')
     })
   })
 
   describe('get by number', () => {
-    it('provides a single user', async () => {
+    it('provides a single user by phone number', async () => {
       let user = await Users.getByNumber('225-555-5555')
       expect(user.first).toBe('john')
     })
   })
 
   describe('get by name', () => {
-    it('provides a single user', async () => {
-      let user = await Users.getByName('jane')
-      expect(user.email).toBe('test2@me.com')
+    it('provides a list of all users with this name', async () => {
+      let user = await Users.getByName('jane', 'doe')
+      expect(user).toHaveLength(1)
     })
   })
 
   describe('update()', () => {
     it('should update the title', async () => {
-      let update = await Users.update('2', {phone:'333-444-5656'});
+      let update = await Users.update(2, {phone:'333-444-5656'});
       console.log(update)
       expect(update.phone).toBe('333-444-5656');
     })
@@ -68,9 +68,16 @@ describe('User model', () => {
   describe('delete()', () => {
     it('should delete a title', async () => {
       await Users.remove(2);
-      let accounts = await db('Users');
+      let accounts = await db('users');
 
       expect(accounts).toHaveLength(2);
+    })
+  })
+
+  describe('login checker', () => {
+    it('should bring back only 1 user based on the unique email identifier', async () => {
+      let account = await Users.loginCheck('take@me.com');
+      expect(account.first).toBe('joseph')
     })
   })
 });
