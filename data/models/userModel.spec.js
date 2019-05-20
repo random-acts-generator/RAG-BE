@@ -52,7 +52,7 @@ describe('User model', () => {
 
   describe('get by name', () => {
     it('provides a single user', async () => {
-      let user = await Users.getByName('jane')
+      let user = await Users.getByName('jane', 'doe')
       expect(user.email).toBe('test2@me.com')
     })
   })

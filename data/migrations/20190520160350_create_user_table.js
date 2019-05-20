@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('users', tbl => {
-    //primary key autoincrement
+    //primary key auto increment
     tbl.increments();
 
     //not nullable data
@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
 
     //nullable data
     tbl
-    .string('number', 15)
+    .string('phone', 15)
     
     //unique data
     tbl
