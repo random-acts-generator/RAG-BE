@@ -17,7 +17,7 @@ module.exports = {
 //define the functions
 function get() { 
   return db('users')
-  .select('first', 'last', 'phone');
+  // .select('first', 'last', 'phone');
 }
 
 function getById(identifier) { 
@@ -28,14 +28,14 @@ function getById(identifier) {
 
 function getByNumber(number) { 
   return db('users')
-  .select('first', 'last', 'phone' )
+  // .select('first', 'last', 'phone' )
   .where({ phone: number })
   .first()
 }
 
 function getByName(surname, family) { 
   return db('users')
-  .select('first', 'last', 'phone' )
+  // .select('first', 'last', 'phone' )
   .where({ first: surname, last: family })
 }
 
