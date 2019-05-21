@@ -1,4 +1,5 @@
 const request = require('supertest');
+const db = require('./data/dbConfig')
 
 const server = require('./server');
 const auth = '/api/auth'
@@ -34,6 +35,7 @@ describe('server', () => {
   //set it as post -> get -> put -> delete so that you don't 
   //have to use seed items you can go from a clean table
   describe('auth route', () => {
+    beforeAll(async () => { await db('users').truncate() })
     describe('post()', () => {
       it('should return 201', done => {
         // we return the promise
@@ -43,21 +45,39 @@ describe('server', () => {
         .expect(201, done);
       });
       
-      it('using the squad (async/await)', async () => {
-        const res = await request(server).post(`${auth}/login`).send({ title: 'Borderlands', year: 2009, system: 'PC' });
-        expect(res.type).toBe('application/json');
-      });
-      
       it('should return 422 missing info', done => {
         return request(server)
-        .post(`${auth}/login`)
-        .send({ system: 'PSP' })
+        .post(`${auth}/register`)
+        .send({ first: 'PSP' })
         .expect(422, done);
+      });
+  
+      it('should return 200', done => {
+        // we return the promise
+        return request(server)
+        .post(`${auth}/login`)
+        .send({ first: "taco", last: "tuesday", phone: "000-999-8888", email: "mom", password: "hi" })
+        .expect(200, done);
+      });
+      
+      it('should return 401 unauthorized user', done => {
+        return request(server)
+        .post(`${auth}/login`)
+        .send({ first: 'PSP', password: 'no', email:'hi' })
+        .expect(401, done);
+      });
+    })
+
+    describe('get', () => {
+      it('should log out and return ', async () => {
+        const res = await request(server).get(`${auth}/logout`);
+        expect(res.type).toBe('o')
       });
     })
   })
 
   describe('user route', () => {
+    beforeAll(async () => { await db('users').truncate() })
     describe('get()', () => {      
       it('returns 200', async () => {
         // use the squad

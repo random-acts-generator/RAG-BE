@@ -18,9 +18,9 @@ server.use(helmet());
 
 //load routes
 server.use('/api/auth', authRoute);
-server.use('/api/users', userRoute);
-server.use('/api/contacts', contactRoute);
-server.use('/api/acts', raRoute);
+// server.use('/api/users', userRoute);
+// server.use('/api/contacts', contactRoute);
+// server.use('/api/acts', raRoute);
 
 //check if running properly
 server.get('/', (req, res) => {
