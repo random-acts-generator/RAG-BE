@@ -79,7 +79,7 @@ router.get('/search/name', (req, res) => {
   Users
   .getByName(first, last)
   .then( account => {
-    if(account === undefined) {
+    if(account === undefined || account.length === 0) {
       return missingError(res);
     }
     else {

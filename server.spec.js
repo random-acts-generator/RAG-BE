@@ -83,17 +83,18 @@ describe('server', () => {
       it('returns 200', async () => {
         const res = await request(server).get(`${users}`);
         // console.log('info', res)
-        expect(res.status).toBe(203);
+        expect(res.status).toBe(200);
       });
       
       it('returns a list', async () => {
         const res = await request(server).get(`${users}`)
-        expect(res.body.users).toHaveLength(1); 
+        expect(res.body.account).toHaveLength(1); 
       });
 
+      //get by id
       it('should return 200', async () => {
         const res = await request(server).get(`${users}/1`);
-        expect(res.status).toBe(203);
+        expect(res.status).toBe(200);
       });
 
       it('should return 404', async () => {
@@ -103,37 +104,39 @@ describe('server', () => {
       
       it('returns a single user', async () => {
         const res = await request(server).get(`${users}/1`)
-        expect(res.body.users.first).toBe('tacs'); 
+        expect(res.body.account.first).toBe('taco'); 
       });
 
+      //get by phone number
       it('should return 200', async () => {
-        const res = await request(server).get(`${users}/search/num`);
-        expect(res.status).toBe(203);
+        const res = await request(server).get(`${users}/search/num`).send({ phone:'000-999-8888' });
+        expect(res.status).toBe(200);
       });
 
       it('should return 404', async () => {
-        const res = await request(server).get(`${users}/search/num`);
+        const res = await request(server).get(`${users}/search/num`).send({ phone:'pp' });
         expect(res.status).toBe(404);
       });
       
       it('returns a single user', async () => {
-        const res = await request(server).get(`${users}/search/num`)
-        expect(res.body.users.first).toBe('tacs'); 
+        const res = await request(server).get(`${users}/search/num`).send({ phone:'000-999-8888' })
+        expect(res.body.account.last).toBe('tuesday'); 
+      });
+
+      //get name
+      it('should return', async () => {
+        const res = await request(server).get(`${users}/search/name`).send({ first:'taco' });
+        expect(res.status).toBe(200);
       });
 
       it('should return', async () => {
-        const res = await request(server).get(`${users}/search/name`);
-        expect(res.status).toBe(202);
-      });
-
-      it('should return', async () => {
-        const res = await request(server).get(`${users}/search/name`);
+        const res = await request(server).get(`${users}/search/name`).send({ last:'all' });
         expect(res.status).toBe(404);
       });
       
       it('returns a list', async () => {
-        const res = await request(server).get(`${users}/search/name`)
-        expect(res.body.users.first).toBe('tacs'); 
+        const res = await request(server).get(`${users}/search/name`).send({ last:'tuesday' });
+        expect(res.body.account).toHaveLength(1); 
       });
     })
 
