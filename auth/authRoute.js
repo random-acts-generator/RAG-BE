@@ -1,6 +1,5 @@
 //import the dependencies
 const express = require('express');
-const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -36,7 +35,7 @@ router.post('/register', ( req, res ) => {
   if ( !first || !last || !email || !password ) {
     return res.status(422).json({ message: 'Missing vital information' })
   }
-  
+
   const hash = bcrypt.hashSync(user.password, 8) 
   user.password = hash
 
@@ -73,22 +72,6 @@ router.post('/login', (req, res) => {
   .catch( err => {
     return res.status(500).json( err );
   })
-})
-
-//users
-router.get('/jokes', (req, res) => {
-  const requestOptions = {
-  headers: { accept: 'application/json' },
-  };
-
-axios
-  .get('https://icanhazdadjoke.com/search', requestOptions)
-  .then(response => {
-    res.status(200).json(response.data.results);
-  })
-  .catch(err => {
-    res.status(500).json({ message: 'Error Fetching Jokes', error: err });
-  });
 })
 
 //logout

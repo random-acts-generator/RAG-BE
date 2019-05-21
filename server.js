@@ -18,7 +18,7 @@ server.use(helmet());
 
 //load routes
 server.use('/api/auth', authRoute);
-// server.use('/api/users', userRoute);
+server.use('/api/users', userRoute);
 // server.use('/api/contacts', contactRoute);
 // server.use('/api/acts', raRoute);
 

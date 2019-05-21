@@ -61,8 +61,8 @@ function update(identifier, change) {
   return db('users')
   .where({ id: identifier })
   .update(change)
-  .then( ids => {
-    return getById(ids[0])
+  .then( () => {
+    return getById(identifier)
   })
 }
 

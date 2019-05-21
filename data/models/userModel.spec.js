@@ -69,8 +69,7 @@ describe('User model', () => {
 
   describe('update()', () => {
     it('should update the phone number', async () => {
-      let update = await Users.update('2', {phone:'333-444-5656'});
-      console.log('item', update)
+      let update = await Users.update(2, {phone:'333-444-5656'});
       expect(update.phone).toBe('333-444-5656');
     })
   })

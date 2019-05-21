@@ -51,9 +51,9 @@ router.get('/:id', (req, res) => {
 })
 
 //by phone number
-router.get('/:id', (req, res) => {
+router.get('/search/num', (req, res) => {
   //set phone number
-  const number = req.params.phone
+  const number = req.body.phone
   
   Users
   .getByNumber(number)
@@ -71,10 +71,10 @@ router.get('/:id', (req, res) => {
 })
 
 //by first and last name
-router.get('/:id', (req, res) => {
+router.get('/search/name', (req, res) => {
   //set name credentials
-  const first = req.params.first
-  const last = req.params.last
+  const first = req.body.first
+  const last = req.body.last
   
   Users
   .getByName(first, last)
