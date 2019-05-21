@@ -9,22 +9,13 @@ const Users = require('../data/models/userModel');
 const { permissions } = require('./permissions');
 const router = express.Router();
 
-//error messages 
-const missingError = res => {
-  res.status(404).json({ error: 'This user does not exist'});
-};
-
-const newError = (sts, msg, res) => {
-  res.status(sts).json({ error: `${msg}` })
-}
-
 //creating a token
 function makeToken(user) {
   const payload = {
     subject: user.id,
-    username: user.first
+    username: user.email
   }
-  const secret = process.env.JWT_SECRET
+  const secret = process.env.SECRET
   const options = { 
     expiresIn: '20h'
   }
@@ -38,8 +29,8 @@ function makeToken(user) {
 //register 
 router.post('/register', ( req, res ) => {
   // implement user registration
-  const { username, password } = req.body
-  const user = { username, password }
+  const { first, last, phone, email, password } = req.body
+  const user = { first, last, phone, email, password }
   
   const hash = bcrypt.hashSync(user.password, 8) 
   user.password = hash
@@ -57,15 +48,15 @@ router.post('/register', ( req, res ) => {
 //login
 router.post('/login', (req, res) => {
   // implement user login
-  const { username, password } = req.body
+  const { first, last, phone, email, password } = req.body
 
   Users
-  .getByUser( username )
+  .loginCheck( email )
   .then( user => {
     if ( user && bcrypt.compareSync(password, user.password)) {
       const token = makeToken(user)
       res.status(200).json({
-        message: `Welcome ${user.username}`, 
+        message: `Welcome ${user.first}`, 
         token
       })
     }
@@ -76,6 +67,22 @@ router.post('/login', (req, res) => {
   .catch( err => {
     return res.status(500).json( err );
   })
+})
+
+//users
+router.get('/users', (req, res) => {
+  const requestOptions = {
+  headers: { accept: 'application/json' },
+  };
+
+axios
+  .get('https://icanhazdadjoke.com/search', requestOptions)
+  .then(response => {
+    res.status(200).json(response.data.results);
+  })
+  .catch(err => {
+    res.status(500).json({ message: 'Error Fetching Jokes', error: err });
+  });
 })
 
 //logout
