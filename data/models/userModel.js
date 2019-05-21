@@ -34,9 +34,19 @@ function getByNumber(number) {
 }
 
 function getByName(surname, family) { 
-  return db('users')
-  // .select('first', 'last', 'phone' )
-  .where({ first: surname, last: family })
+  if (!surname) {
+    return db('users')
+    .where({ last: family })
+  }
+  else if (!family) {
+    return db('users')
+    .where({ first: surname })
+  }
+  else {
+    return db('users')
+    // .select('first', 'last', 'phone' )
+    .where({ first: surname, last: family })
+  }
 }
 
 function insert(user) { 

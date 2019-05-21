@@ -32,6 +32,11 @@ router.post('/register', ( req, res ) => {
   const { first, last, phone, email, password } = req.body
   const user = { first, last, phone, email, password }
   
+  //check req body
+  if ( !first || !last || !email || !password ) {
+    return res.status(422).json({ message: 'Missing vital information' })
+  }
+  
   const hash = bcrypt.hashSync(user.password, 8) 
   user.password = hash
 
@@ -71,7 +76,7 @@ router.post('/login', (req, res) => {
 })
 
 //users
-router.get('/users', (req, res) => {
+router.get('/jokes', (req, res) => {
   const requestOptions = {
   headers: { accept: 'application/json' },
   };

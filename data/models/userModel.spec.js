@@ -55,6 +55,16 @@ describe('User model', () => {
       let user = await Users.getByName('jane', 'doe')
       expect(user).toHaveLength(1)
     })
+
+    it('provides a list of all users with last name', async () => {
+      let user = await Users.getByName(null, 'doe')
+      expect(user).toHaveLength(2)
+    })
+
+    it('provides a list of all users with first name', async () => {
+      let user = await Users.getByName('joseph', null)
+      expect(user).toHaveLength(1)
+    })
   })
 
   describe('update()', () => {
