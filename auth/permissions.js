@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const key = process.env.SECRET
 
 module.exports = {
-  authentication
+  permissions
 }
 
 //the authentication function 
