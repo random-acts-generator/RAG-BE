@@ -107,7 +107,6 @@ router.put('/:id', (req, res) => {
   Users
   .update(ID, newAccount) 
   .then( account => {
-    console.log(account)
     if(account === undefined) {
     return missingError(res);
     }

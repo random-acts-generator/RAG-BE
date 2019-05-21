@@ -141,39 +141,33 @@ describe('server', () => {
     })
 
     describe('put()', () => {
-      it('should return 202', done => {
-        return request(server)
-        .put(`${users}/3`)
-        .send({system: '3DS'})
-        .expect(202, done);
+      it('should return 202', async () => {
+        const res = await request(server).put(`${users}/1`).send({ first: '3DS' }).expect(202);
+        expect(res.body.account.first).toBe('3DS')
       });
       
       it('return a 406', async () => {
-        const res = await request(server).put(`${users}/2`);
+        const res = await request(server).put(`${users}/1`).send({ taco:'ll' });
         expect(res.status).toBe(406);
       });
 
       it('return a 404 missing id', async () => {
-        const res = await request(server).put(`${users}/10`).send({system: '3DS'});
-        expect(res.status).toBe(204);
+        const res = await request(server).put(`${users}/10`).send({ email: 'nindie'});
+        expect(res.status).toBe(404);
       });
     })
 
     describe('delete()', () => {
-      it('should return 200 OK', () => {
-        // we return the promise
-        return request(server)
-        .get(users)
-        .expect(200);
+      it('should return 202', async () => {
+        const res = await request(server).delete(`${users}/1`);
+        expect(res.status).toBe(202)
       });
-      
-      it('using the squad (async/await)', async () => {
-        // use the squad
-        const res = await request(server).get(users);
-        expect(res.status).toBe(200);
+
+      it('return a 404 missing id', async () => {
+        const res = await request(server).delete(`${users}/10`);
+        expect(res.status).toBe(404);
       });
     })
-
   });
 
   //set it as post -> get -> put -> delete so that you don't 
