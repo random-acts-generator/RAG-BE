@@ -9,13 +9,13 @@ exports.up = function(knex, Promise) {
 
     //foreign key
     tbl
-    .integer('related to')
+    .string('related')
     .unsigned()
     .notNullable()
-    .references('relation')
-    .inTable('contacts')
-    .onDelete('SET NULL')
-    .onUpdate('CASCADE')
+    // .references('relation')
+    // .inTable('contacts')
+    // .onDelete('SET NULL')
+    // .onUpdate('CASCADE')
   })
 };
 

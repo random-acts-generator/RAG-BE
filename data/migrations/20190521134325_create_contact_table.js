@@ -21,7 +21,7 @@ exports.up = function(knex, Promise) {
     tbl
     .string('relation', 128)
     .notNullable()
-    .unique()
+    // .unique()
 
     //foreign key
     tbl

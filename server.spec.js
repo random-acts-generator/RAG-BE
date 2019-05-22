@@ -37,12 +37,11 @@ describe('server', () => {
   //have to use seed items you can go from a clean table
   describe('auth route', () => {
     describe('post()', () => {
-      it('should return 201', done => {
-        // we return the promise
-        return request(server)
-        .post(`${auth}/register`)
-        .send({ first: "taco", last: "tuesday", phone: "000-999-8888", email: "mom", password: "hi" })
-        .expect(201, done);
+      it('should return 201', async () => { 
+        await request(server).post(`${auth}/register`).send({ first: "taco", last: "tuesday", phone: "000-999-8888", email: "mom", password: "hi" });
+        await request(server).post(`${auth}/register`).send({ first: "mobile", last: "monday", phone: "000-999-7777", email: "dad", password: "hey" });
+        await request(server).post(`${auth}/register`).send({ first: "wicked", last: "wednesday", phone: "000-999-6666", email: "spouse", password: "hello" })
+        .expect(201);
       });
       
       it('should return 422 missing info', done => {
@@ -88,7 +87,7 @@ describe('server', () => {
       
       it('returns a list', async () => {
         const res = await request(server).get(`${users}`)
-        expect(res.body.account).toHaveLength(1); 
+        expect(res.body.account).toHaveLength(3); 
       });
 
       //get by id
@@ -98,7 +97,7 @@ describe('server', () => {
       });
 
       it('should return 404', async () => {
-        const res = await request(server).get(`${users}/3`);
+        const res = await request(server).get(`${users}/7`);
         expect(res.status).toBe(404);
       });
       
@@ -172,88 +171,93 @@ describe('server', () => {
 
   //set it as post -> get -> put -> delete so that you don't 
   //have to use seed items you can go from a clean table
-  // describe('contact route', () => {
-  //   describe('post()', () => {
-  //     it('should return 201', done => {
-  //       // we return the promise
-  //       return request(server)
-  //       .post(users)
-  //       .send({ title: 'Minecraft', year: 2009, system: 'PC' })
-  //       .expect(201, done);
-  //     });
+  describe('contact route', () => {
+    describe('post()', () => {
+      it('should return 201', async () => { 
+        await request(server).post(`${auth}/register`).send({ first: "taco", last: "tuesday", phone: "000-999-8888", email: "mom", password: "hi" });
+        await request(server).post(`${auth}/register`).send({ first: "mobile", last: "monday", phone: "000-999-7777", email: "dad", password: "hey" });
+        await request(server).post(`${auth}/register`).send({ first: "wicked", last: "wednesday", phone: "000-999-6666", email: "spouse", password: "hello" })
+        .expect(201);
+      });
       
-  //     it('using the squad (async/await)', async () => {
-  //       const res = await request(server).post(users).send({ title: 'Borderlands', year: 2009, system: 'PC' });
-  //       expect(res.type).toBe('application/json');
-  //     });
+      it('should return 422 missing info', done => {
+        return request(server)
+        .post(`${auth}/register`)
+        .send({ first: 'PSP' })
+        .expect(422, done);
+      });
+  
+      it('should return 200', done => {
+        // we return the promise
+        return request(server)
+        .post(`${auth}/login`)
+        .send({ first: "taco", last: "tuesday", phone: "000-999-8888", email: "mom", password: "hi" })
+        .expect(200, done);
+      });
+    })
+
+    describe('get()', () => {      
+      it('returns 200', async () => {
+        const res = await request(server).get(`${users}`);
+        // console.log('info', res)
+        expect(res.status).toBe(200);
+      });
       
-  //     it('should return 422 missing info', done => {
-  //       return request(server)
-  //       .post(users)
-  //       .send({ system: 'PSP' })
-  //       .expect(422, done);
-  //     });
-  //   })
+      it('returns a list', async () => {
+        const res = await request(server).get(`${users}`)
+        expect(res.body.account).toHaveLength(3); 
+      });
 
-  //   describe('get()', () => {      
-  //     it('should return', async () => {
-  //       // use the squad
-  //       const res = await request(server).get(users);
-  //       expect(res.status).toBe(200);
-  //     });
+      //get by id
+      it('should return 200', async () => {
+        const res = await request(server).get(`${users}/1`);
+        expect(res.status).toBe(200);
+      });
+
+      it('should return 404', async () => {
+        const res = await request(server).get(`${users}/7`);
+        expect(res.status).toBe(404);
+      });
       
-  //     it('returns a list', async () => {
-  //       const res = await request(server).get(users)
-  //       expect(res.body.title).toHaveLength(3); 
-  //     });
+      it('returns a single user', async () => {
+        const res = await request(server).get(`${users}/1`)
+        expect(res.body.account.first).toBe('taco'); 
+      });
+    })
+    
+    describe('put()', () => {
+      it('should return 202', async () => {
+        const res = await request(server).put(`${users}/1`).send({ first: '3DS' }).expect(202);
+        expect(res.body.account.first).toBe('3DS')
+      });
       
-  //     it('return the second entry', async () => {
-  //       const expected = { "System": "Sega", "Title": "Streets of Rage", "Year": 1990, "id": 2 };
-  //       const game = await request(server).get(users)
-        
-  //       expect(game.body.title[1]).toEqual(expected);
-        
-  //     });
-  //   })
+      it('return a 406', async () => {
+        const res = await request(server).put(`${users}/1`).send({ taco:'ll' });
+        expect(res.status).toBe(406);
+      });
 
-  //   describe('put()', () => {
-  //     it('should return 202', done => {
-  //       return request(server)
-  //       .put(`${users}/3`)
-  //       .send({system: '3DS'})
-  //       .expect(202, done);
-  //     });
-      
-  //     it('return a 406', async () => {
-  //       const res = await request(server).put(`${users}/2`);
-  //       expect(res.status).toBe(406);
-  //     });
+      it('return a 404 missing id', async () => {
+        const res = await request(server).put(`${users}/10`).send({ email: 'nindie'});
+        expect(res.status).toBe(404);
+      });
+    })
 
-  //     it('return a 404 missing id', async () => {
-  //       const res = await request(server).put(`${users}/10`).send({system: '3DS'});
-  //       expect(res.status).toBe(204);
-  //     });
-  //   })
+    describe('delete()', () => {
+      it('should return 202', async () => {
+        const res = await request(server).delete(`${users}/1`);
+        expect(res.status).toBe(202)
+      });
 
-  //   describe('delete()', () => {
-  //     it('should return 200 OK', () => {
-  //       // we return the promise
-  //       return request(server)
-  //       .get(users)
-  //       .expect(200);
-  //     });
-      
-  //     it('using the squad (async/await)', async () => {
-  //       // use the squad
-  //       const res = await request(server).get(users);
-  //       expect(res.status).toBe(200);
-  //     });
-  //   })
-  // })
+      it('return a 404 missing id', async () => {
+        const res = await request(server).delete(`${users}/10`);
+        expect(res.status).toBe(404);
+      });
+    })
+  })
 
-  // //set it as post -> get -> put -> delete so that you don't 
-  // //have to use seed items you can go from a clean table
-  // describe('acts route', () => {
+  //set it as post -> get -> put -> delete so that you don't 
+  //have to use seed items you can go from a clean table
+  describe('acts route', () => {
 
-  // })
+  })
 });

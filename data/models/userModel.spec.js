@@ -18,7 +18,7 @@ describe('User model', () => {
       expect(test2.first).toBe('jane')
     
       let test3= await Users.insert({ first:'joseph', last:'brim', phone:'554-555-5555', email:'take@me.com', password:'passed'})
-      expect(test2.first).toBe('jane')
+      expect(test3.first).toBe('joseph')
       
       const accounts = await db('users');
 
