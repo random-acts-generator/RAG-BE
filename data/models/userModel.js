@@ -10,7 +10,8 @@ module.exports = {
   insert,
   update,
   remove,
-  loginCheck
+  loginCheck,
+  userContacts
 }
 
 
@@ -76,4 +77,10 @@ function loginCheck(em) {
   return db('users')
   .where({ email: em })
   .first()
+}
+
+function userContacts(identifier) {
+  return db('contacts')
+  .where('user_id', id)
+  .then( people => people.map(person => { return {...person}}))
 }

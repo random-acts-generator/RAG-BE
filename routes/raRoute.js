@@ -58,7 +58,7 @@ router.post('/', (req, res) => {
 
   //check req body
   if ( !description || !related ) { 
-    return newError( 406, 'Missing update information!', res );
+    return newError( 422, 'Missing information!', res );
   }
 
   Acts

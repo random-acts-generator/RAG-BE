@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
     tbl
     .string('related')
     .unsigned()
-    .notNullable()
+    // .notNullable()
     // .references('relation')
     // .inTable('contacts')
     // .onDelete('SET NULL')

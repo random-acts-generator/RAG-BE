@@ -9,6 +9,8 @@ const acts = '/api/acts'
 
 describe('server', () => {
   beforeAll(async () => { await db('users').truncate() })
+  beforeAll(async () => { await db('contacts').truncate() })
+  beforeAll(async () => { await db('acts').truncate() })
   it('sets the environment to testing', () => {
     expect(process.env.DB_ENV).toBe('testing');
   });
@@ -177,64 +179,63 @@ describe('server', () => {
         await request(server).post(`${contacts}`).send({ contactFirst: "taco", contactLast: "tuesday", contactPhone: "000-999-8888", relation: 'test', user_id: 1 });
         await request(server).post(`${contacts}`).send({ contactFirst: "mobile", contactLast: "monday", contactPhone: "000-999-7777", relation: 'test', user_id: 1 });
         await request(server).post(`${contacts}`).send({ contactFirst: "wicked", contactLast: "wednesday", contactPhone: "000-999-6666", relation: 'test', user_id: 1 })
-        .expect(203);
+        .expect(201);
       });
       
       it('should return 422 missing info', done => {
         return request(server)
         .post(`${contacts}`)
         .send({ contactFirst: 'PSP' })
-        .expect(42, done);
+        .expect(422, done);
       });
   
-      it('should return 200', async () => {
-        let res = await request(server).post(`${contacts}`).send({ contactFirst: "tfo", contactLast: "tuy", contactPhone: "000-999-8888", relation: "tea", user_id: 2 })
-        .expect(res.body.contacts.email).toBe('tea');
+      it('should return the right info', async () => {
+        const res = await request(server).post(`${contacts}`).send({ contactFirst: "tfo", contactLast: "tuy", contactPhone: "000-999-8888", relation: "tea", user_id: 2 })
+        expect(res.body.relation).toBe('tea');
       });
     })
 
     describe('get()', () => {      
       it('returns 200', async () => {
         const res = await request(server).get(`${contacts}`);
-        // console.log('info', res)
-        expect(res.status).toBe(20);
+        expect(res.status).toBe(200);
       });
       
       it('returns a list', async () => {
         const res = await request(server).get(`${contacts}`)
-        expect(res.body.account).toHaveLength(3); 
+        expect(res.body).toHaveLength(4); 
       });
 
       //get by id
       it('should return 200', async () => {
         const res = await request(server).get(`${contacts}/1`);
-        expect(res.status).toBe(20);
+        expect(res.status).toBe(200);
       });
 
       it('should return 404', async () => {
         const res = await request(server).get(`${contacts}/7`);
-        expect(res.status).toBe(44);
+        expect(res.status).toBe(404);
       });
       
-      it('returns a single user', async () => {
+      it('returns a single contact', async () => {
         const res = await request(server).get(`${contacts}/1`)
-        expect(res.body.account.contactFirst).toBe('tacs'); 
+        expect(res.body.contactFirst).toBe('taco'); 
       });
     })
     
     describe('put()', () => {
-      it('should return 202', async () => {
-        const res = await request(server).put(`${contacts}/1`).send({ contactFirst: 'vota' }).expect(20);
-        expect(res.body.account.contactFirst).toBe('3DS')
+      it('should get 202 and correct info', async () => {
+        const res = await request(server).put(`${contacts}/1`).send({ contactFirst: 'vita' }).expect(202);
+        expect(res.body.contactFirst).toBe('vita')
       });
       
       it('return a 406', async () => {
-        const res = await request(server).put(`${contacts}/1`).send({ taco:'ll' });
+        const res = await request(server).put(`${contacts}/2`).send({ taco:'ll' });
         expect(res.status).toBe(40);
       });
 
       it('return a 404 missing id', async () => {
-        const res = await request(server).put(`${contacts}/10`).send({ email: 'nindie'});
+        const res = await request(server).put(`${contacts}/10`).send({ relation: 'nindie'});
         expect(res.status).toBe(44);
       });
     })
@@ -242,12 +243,12 @@ describe('server', () => {
     describe('delete()', () => {
       it('should return 202', async () => {
         const res = await request(server).delete(`${contacts}/1`);
-        expect(res.status).toBe(22)
+        expect(res.status).toBe(202)
       });
 
       it('return a 404 missing id', async () => {
         const res = await request(server).delete(`${contacts}/10`);
-        expect(res.status).toBe(40);
+        expect(res.status).toBe(404);
       });
     })
   })

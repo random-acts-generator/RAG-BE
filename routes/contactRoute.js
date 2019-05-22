@@ -58,7 +58,7 @@ router.post('/', (req, res) => {
 
   //check req body
   if ( !contactFirst || !contactLast || !contactPhone || !relation ) { 
-    return newError( 406, 'Missing update information!', res );
+    return newError( 422, 'Missing information!', res );
   }
 
   Contacts
@@ -95,6 +95,7 @@ router.put('/:id', (req, res) => {
     }
   })
   .catch( err => {
+    console.log(err)
     return newError( 500, err , res );
   })
 })
