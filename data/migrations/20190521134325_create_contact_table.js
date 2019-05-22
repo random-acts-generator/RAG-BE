@@ -26,12 +26,12 @@ exports.up = function(knex, Promise) {
     //foreign key
     tbl
     .integer('user_id')
-    .unsigned()
-    .notNullable()
-    .references('id')
-    .inTable('users')
-    .onDelete('SET NULL')
-    .onUpdate('CASCADE')
+    // .unsigned()
+    // .notNullable()
+    // .references('id')
+    // .inTable('users')
+    // .onDelete('SET NULL')
+    // .onUpdate('CASCADE')
   }) 
 };
 

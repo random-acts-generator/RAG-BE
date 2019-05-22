@@ -50,17 +50,38 @@ router.get('/:id', (req, res) => {
   })
 })
 
+//create request
+router.post('/', (req, res) => {
+  //set req body
+  const { contactFirst, contactLast, contactPhone, relation, user_id } = req.body;
+  const newContact = { contactFirst, contactLast, contactPhone, relation, user_id };
+
+  //check req body
+  if ( !contactFirst || !contactLast || !contactPhone || !relation ) { 
+    return newError( 406, 'Missing update information!', res );
+  }
+
+  Contacts
+  .insert(newContact)
+  .then( contact => {
+    res.status(201).json( contact )
+  })
+  .catch( err => {
+    return newError ( 500, err, res )
+  })
+})
+
 //update request
 router.put('/:id', (req, res) => {
   //set ID
   const ID = req.params.id
   
   //set req body
-  const { first, last, phone, password } = req.body;
-  const newContact = { first, last, phone, password };
+  const { contactFirst, contactLast, contactPhone, relation, user_id } = req.body;
+  const newContact = { contactFirst, contactLast, contactPhone, relation, user_id };
 
   //check req body
-  if ( !first && !last && !phone && !password ) { 
+  if ( !contactFirst && !contactLast && !contactPhone && !password ) { 
     return newError( 406, 'Missing update information!', res );
   }
   Contacts
