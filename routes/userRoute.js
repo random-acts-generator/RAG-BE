@@ -97,7 +97,7 @@ router.get('/:id/contacts', (req, res) => {
   const ID = req.params.id
   
   Users
-  .getRecipes(ID)
+  .userContacts(ID)
   .then( account => {
     if(account === undefined) {
       return missingError(res);
