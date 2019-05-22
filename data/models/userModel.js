@@ -79,18 +79,18 @@ function loginCheck(em) {
   .first()
 }
 
-function userContacts(identifier) {
-  let user = db('users')
+// function userContacts(identifier) {
+//   let user = db('users')
 
-  if (identifier) {
-    user.where('id', identifier).first();
+//   if (identifier) {
+//     user.where('id', identifier).first();
     
-    const data = [user, 'contacts:', findContacts(identifier)]
-    return Promise.all(data)
-  }
-}
+//     const data = [user, 'contacts:', findContacts(identifier)]
+//     return Promise.all(data)
+//   }
+// }
 
-function findContacts(identifier) {
+function userContacts(identifier) {
   return db('contacts')
   .where('user_id', identifier)
   .then( people => people.map(person => { return {...person}}))
