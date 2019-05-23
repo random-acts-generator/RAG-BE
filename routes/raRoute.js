@@ -62,7 +62,7 @@ router.post('/', (req, res) => {
   }
 
   Acts
-  .insert(newAct)
+  .insert(newAct, 'id')
   .then( act => {
     res.status(201).json( act )
   })

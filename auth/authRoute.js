@@ -42,7 +42,7 @@ router.post('/register', ( req, res ) => {
   user.password = hash
 
   Users
-  .insert(user)
+  .insert(user, 'id')
   .then( newUser => {
     res.status(201).json(newUser)
     // //autofill mom, dad, and best friend
