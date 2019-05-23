@@ -98,12 +98,12 @@ router.get('/:id/contacts', (req, res) => {
   
   Users
   .userContacts(ID)
-  .then( account => {
-    if(account === undefined) {
+  .then( contacts => {
+    if(contacts === undefined) {
       return missingError(res);
     }
     else {
-      return res.status(200).json({ account });
+      return res.status(200).json({ contacts });
     }
   })
   .catch( err => {
@@ -118,12 +118,12 @@ router.get('/:id/acts', (req, res) => {
   
   Users
   .userActs(ID)
-  .then( account => {
-    if(account === undefined) {
+  .then( acts => {
+    if(acts === undefined) {
       return missingError(res);
     }
     else {
-      return res.status(200).json({ account });
+      return res.status(200).json({ acts });
     }
   })
   .catch( err => {

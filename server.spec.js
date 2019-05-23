@@ -258,9 +258,9 @@ describe('server', () => {
   describe('acts route', () => {
     describe('post()', () => {
       it('should return 201', async () => { 
-        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'family' });
-        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'friend' });
-        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'coworker' })
+        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'family', user_id: 2 });
+        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'friend', user_id: 1 });
+        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'coworker', user_id: 3 })
         .expect(201);
       });
       
@@ -272,7 +272,7 @@ describe('server', () => {
       });
   
       it('should return the right info', async () => {
-        const res = await request(server).post(`${acts}`).send({ description: 'sega dreamcast', related: "tea" })
+        const res = await request(server).post(`${acts}`).send({ description: 'sega dreamcast', related: "tea", user_id: 2 })
         expect(res.body.related).toBe('tea');
       });
     })
