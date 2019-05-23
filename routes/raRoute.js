@@ -19,7 +19,7 @@ const requestOptions = {
 
 //CRUD requests
 //get actions
-router.get('/', requestOptions, (req, res) => {
+router.get('/', (req, res) => {
   Acts
   .get()
   .then( act => {
@@ -31,7 +31,7 @@ router.get('/', requestOptions, (req, res) => {
 })
 
 //by id
-router.get('/:id', requestOptions, (req, res) => {
+router.get('/:id', (req, res) => {
   //set ID
   const ID = req.params.id
   
@@ -51,7 +51,7 @@ router.get('/:id', requestOptions, (req, res) => {
 })
 
 //create request
-router.post('/', requestOptions, (req, res) => {
+router.post('/', (req, res) => {
   //set req body
   const { description, related, user_id } = req.body;
   const newAct = { description, related, user_id };
@@ -72,7 +72,7 @@ router.post('/', requestOptions, (req, res) => {
 })
 
 //update request
-router.put('/:id', requestOptions, (req, res) => {
+router.put('/:id', (req, res) => {
   //set ID
   const ID = req.params.id
   
@@ -99,7 +99,7 @@ router.put('/:id', requestOptions, (req, res) => {
   })
 })
 
-router.delete('/:id', requestOptions, (req, res) => {
+router.delete('/:id', (req, res) => {
   //set ID
   const ID = req.params.id
   
