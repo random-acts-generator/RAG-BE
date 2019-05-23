@@ -27,6 +27,7 @@ function insert(user) {
   return db('contacts')
   .insert( user )
   .then( ids => {
+    console.log(ids[0])
     return getById(ids[0])
   })
 }
