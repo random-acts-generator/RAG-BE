@@ -17,12 +17,11 @@ exports.up = function(knex, Promise) {
     tbl
     .string('contactPhone', 15)
 
-    //unique data
     tbl
     .string('relation', 128)
-    // .notNullable()
-    // .unique()
-
+    .unsigned()
+    .notNullable()
+    
     //foreign key
     tbl
     .integer('user_id')

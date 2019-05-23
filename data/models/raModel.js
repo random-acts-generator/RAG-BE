@@ -8,6 +8,7 @@ module.exports = {
   insert,
   update,
   remove,
+  generate
 }
 
 
@@ -45,3 +46,27 @@ function remove(identifier) {
   .where({ id: identifier })
   .del()
 }
+
+
+// function peopleCount() {
+//   return db('contacts')
+//   .count('id as amount')
+//   // .where({ related: relation })
+//   .then(function(total) {
+//     total[0].amount    
+//   })
+// }
+
+// function actCount() {
+//   return db('acts')
+//   .count('id as amount')
+//   // .where({ related: relation })
+// }
+// function generate() {
+//   let people = peopleCount()
+//   let act = actCount()
+//   console.log(people, act.value, 'numbers')
+//   let randomPerson = Math.floor((Math.random() * people) + 1);
+//   let randomAct = Math.floor((Math.random() * act) + 1);
+  
+// }

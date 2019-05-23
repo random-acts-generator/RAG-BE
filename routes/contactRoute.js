@@ -81,21 +81,20 @@ router.put('/:id', (req, res) => {
   const newContact = { contactFirst, contactLast, contactPhone, relation, user_id };
 
   //check req body
-  if ( !contactFirst && !contactLast && !contactPhone && !password ) { 
+  if ( !contactFirst && !contactLast && !contactPhone && !relation ) { 
     return newError( 406, 'Missing update information!', res );
   }
   Contacts
   .update(ID, newContact) 
   .then( contact => {
-    if(contact === undefined) {
-    return missingError(res);
+    if(contact === undefined || contact.length === 0) {
+      return missingError(res);
     }
     else {
       return res.status(202).json( contact );
     }
   })
   .catch( err => {
-    console.log(err)
     return newError( 500, err , res );
   })
 })

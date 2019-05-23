@@ -58,4 +58,13 @@ describe('acts model', () => {
       expect(actions).toHaveLength(2);
     })
   })
+
+  describe('generate', () => {
+    it('should return a random act and person', async () => {
+      let thiss = await Acts.generate()
+      expect(thiss.body).toBe('something')
+
+
+    })
+  })
 });

@@ -89,4 +89,11 @@ describe('User model', () => {
       expect(account.first).toBe('joseph')
     })
   })
+
+  describe('userContacts', () => {
+    it('should return an empty array', async () => {
+      let test = await Users.userContacts(1)
+      expect(test).toHaveLength(0)
+    })
+  })
 });

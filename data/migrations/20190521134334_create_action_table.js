@@ -6,16 +6,22 @@ exports.up = function(knex, Promise) {
     // nullable data 
     tbl
     .string('description')
+    
+    tbl
+    .string('related', 128)
+    .unsigned()
+    .notNullable()
 
     //foreign key
     tbl
-    .string('related')
+    .integer('user_id', 128)
     .unsigned()
-    // .notNullable()
-    // .references('relation')
-    // .inTable('contacts')
-    // .onDelete('SET NULL')
-    // .onUpdate('CASCADE')
+    .notNullable()
+    .references('id')
+    .inTable('users')
+    .onDelete('SET NULL')
+    .onUpdate('CASCADE')
+
   })
 };
 

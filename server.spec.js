@@ -230,13 +230,13 @@ describe('server', () => {
       });
       
       it('return a 406', async () => {
-        const res = await request(server).put(`${contacts}/2`).send({ taco:'ll' });
-        expect(res.status).toBe(40);
+        const res = await request(server).put(`${contacts}/1`).send({ cot: 'jump' });
+        expect(res.status).toBe(406);
       });
 
       it('return a 404 missing id', async () => {
-        const res = await request(server).put(`${contacts}/10`).send({ relation: 'nindie'});
-        expect(res.status).toBe(44);
+        const res = await request(server).put(`${contacts}/11`).send({ relation: 'nindie'});
+        expect(res.status).toBe(404);
       });
     })
 
@@ -256,6 +256,82 @@ describe('server', () => {
   //set it as post -> get -> put -> delete so that you don't 
   //have to use seed items you can go from a clean table
   describe('acts route', () => {
+    describe('post()', () => {
+      it('should return 201', async () => { 
+        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'family' });
+        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'friend' });
+        await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'coworker' })
+        .expect(201);
+      });
+      
+      it('should return 422 missing info', done => {
+        return request(server)
+        .post(`${acts}`)
+        .send({ description: 'xbox 1' })
+        .expect(422, done);
+      });
+  
+      it('should return the right info', async () => {
+        const res = await request(server).post(`${acts}`).send({ description: 'sega dreamcast', related: "tea" })
+        expect(res.body.related).toBe('tea');
+      });
+    })
 
+    describe('get()', () => {      
+      it('returns 200', async () => {
+        const res = await request(server).get(`${acts}`);
+        expect(res.status).toBe(200);
+      });
+      
+      it('returns a list', async () => {
+        const res = await request(server).get(`${acts}`)
+        expect(res.body).toHaveLength(4); 
+      });
+
+      //get by id
+      it('should return 200', async () => {
+        const res = await request(server).get(`${acts}/1`);
+        expect(res.status).toBe(200);
+      });
+
+      it('should return 404', async () => {
+        const res = await request(server).get(`${acts}/7`);
+        expect(res.status).toBe(404);
+      });
+      
+      it('returns a single contact', async () => {
+        const res = await request(server).get(`${acts}/1`)
+        expect(res.body.description).toBe('help 1 new person today'); 
+      });
+    })
+    
+    describe('put()', () => {
+      it('should get 202 and correct info', async () => {
+        const res = await request(server).put(`${acts}/1`).send({ description: '2ds' }).expect(202);
+        expect(res.body.description).toBe('2ds')
+      });
+      
+      it('return a 406', async () => {
+        const res = await request(server).put(`${acts}/1`).send({ cot: 'jump' });
+        expect(res.status).toBe(406);
+      });
+
+      it('return a 404 missing id', async () => {
+        const res = await request(server).put(`${acts}/11`).send({ related: 'nindie'});
+        expect(res.status).toBe(404);
+      });
+    })
+
+    describe('delete()', () => {
+      it('should return 202', async () => {
+        const res = await request(server).delete(`${acts}/1`);
+        expect(res.status).toBe(202)
+      });
+
+      it('return a 404 missing id', async () => {
+        const res = await request(server).delete(`${acts}/10`);
+        expect(res.status).toBe(404);
+      });
+    })
   })
 });

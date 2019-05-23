@@ -81,7 +81,7 @@ router.put('/:id', (req, res) => {
   const newAct = { description, related };
 
   //check req body
-  if ( !description || !related ) { 
+  if ( !description && !related ) { 
     return newError( 406, 'Missing update information!', res );
   }
   Acts

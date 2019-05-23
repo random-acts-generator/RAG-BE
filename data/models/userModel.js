@@ -95,3 +95,9 @@ function userContacts(identifier) {
   .where('user_id', identifier)
   .then( people => people.map(person => { return {...person}}))
 }
+
+function userActs(identifier) {
+  return db('acts')
+  .where('user_id', identifier)
+  .then( acts => acts.map(act => { return {...act}}))
+}

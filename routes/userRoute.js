@@ -111,6 +111,26 @@ router.get('/:id/contacts', (req, res) => {
   })
 })
 
+//get acts
+router.get('/:id/acts', (req, res) => {
+  //set ID
+  const ID = req.params.id
+  
+  Users
+  .userActs(ID)
+  .then( account => {
+    if(account === undefined) {
+      return missingError(res);
+    }
+    else {
+      return res.status(200).json({ account });
+    }
+  })
+  .catch( err => {
+    return newError( 500, err, res );
+  })
+})
+
 //update request
 router.put('/:id', (req, res) => {
   //set ID
