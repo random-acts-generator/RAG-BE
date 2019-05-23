@@ -174,6 +174,7 @@ describe('server', () => {
   //set it as post -> get -> put -> delete so that you don't 
   //have to use seed items you can go from a clean table
   describe('contact route', () => {
+    beforeAll(async () => { await db('contacts').truncate() })
     describe('post()', () => {
       it('should return 201', async () => { 
         await request(server).post(`${contacts}`).send({ contactFirst: "taco", contactLast: "tuesday", contactPhone: "000-999-8888", relation: 'test', user_id: 1 });
@@ -256,6 +257,7 @@ describe('server', () => {
   //set it as post -> get -> put -> delete so that you don't 
   //have to use seed items you can go from a clean table
   describe('acts route', () => {
+    beforeAll(async () => { await db('acts').truncate() })
     describe('post()', () => {
       it('should return 201', async () => { 
         await request(server).post(`${acts}`).send({ description: 'help 1 new person today', related: 'family', user_id: 2 });
