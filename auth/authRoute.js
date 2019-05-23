@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 
 //import the model, router, and function
 const Users = require('../data/models/userModel');
+const Contacts = require('../data/models/contactModel');
+const Acts = require('../data/models/raModel');
 const { permissions } = require('./permissions');
 const router = express.Router();
 
@@ -43,6 +45,18 @@ router.post('/register', ( req, res ) => {
   .insert(user)
   .then( newUser => {
     res.status(201).json(newUser)
+    //autofill mom, dad, and best friend
+    Contacts.insert(mom)
+    Contacts.insert(dad)
+    Contacts.insert(best)
+  
+    //autofill 
+    Acts.insert(cook)
+    Acts.insert(book)
+    Acts.insert(card)
+    Acts.insert(compliment)
+    Acts.insert(hug)
+    Acts.insert(coffee)
   })
   .catch( err => {
     return res.status(500).json( err )
