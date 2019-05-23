@@ -11,7 +11,8 @@ module.exports = {
   update,
   remove,
   loginCheck,
-  userContacts
+  userContacts,
+  userActs
 }
 
 

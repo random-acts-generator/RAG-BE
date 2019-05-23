@@ -96,4 +96,11 @@ describe('User model', () => {
       expect(test).toHaveLength(0)
     })
   })
+
+  describe('userActs', () => {
+    it('should return an empty array', async () => {
+      let test = await Users.userActs(1)
+      expect(test).toHaveLength(0)
+    })
+  })
 });
