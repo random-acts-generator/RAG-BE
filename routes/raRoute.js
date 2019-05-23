@@ -53,16 +53,16 @@ router.get('/:id', (req, res) => {
 //create request
 router.post('/', (req, res) => {
   //set req body
-  const { description, related } = req.body;
-  const newAct = { description, related };
+  const { description, related, user_id } = req.body;
+  const newAct = { description, related, user_id };
 
   //check req body
-  if ( !description || !related ) { 
+  if ( !description || !related || !user_id ) { 
     return newError( 422, 'Missing information!', res );
   }
 
   Acts
-  .insert(newAct)
+  .insert(newAct, 'id')
   .then( act => {
     res.status(201).json( act )
   })

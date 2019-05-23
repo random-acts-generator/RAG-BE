@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 
 //import the model, router, and function
 const Users = require('../data/models/userModel');
+const Contacts = require('../data/models/contactModel');
+const Acts = require('../data/models/raModel');
 const { permissions } = require('./permissions');
 const router = express.Router();
 
@@ -40,9 +42,35 @@ router.post('/register', ( req, res ) => {
   user.password = hash
 
   Users
-  .insert(user)
+  .insert(user, 'id')
   .then( newUser => {
     res.status(201).json(newUser)
+
+    // let defaults = [
+      
+    // ]
+    let mom = {contactFirst: 'my', contactLast: 'mom', contactPhone: '000-999-8888', relation: 'family', user_id: newUser.id}
+    let dad = {contactFirst: 'my', contactLast: 'dad', contactPhone: '000-555-8888', relation: 'family', user_id: newUser.id}
+    let best = {contactFirst: 'best', contactLast: 'friend', contactPhone: '222-999-8888', relation: 'friend', user_id: newUser.id}
+    //autofill mom, dad, and best friend
+    Contacts.insert(mom)
+    Contacts.insert(dad)
+    Contacts.insert(best)
+  
+    let cook =  {description: 'Cook them dinner.', related: 'family', user_id: newUser.id}
+    let book =  {description: "Pass along a wonderful book you've finished reading.", related: 'family', user_id: newUser.id}
+    let card =  {description: 'Send them a card.', related: 'family', user_id: newUser.id}
+    let compliment =  {description: 'Compliment them.', related: 'family', user_id: newUser.id}
+    let hug =  {description: 'Give them a hug.', related: 'friend', user_id: newUser.id}
+    let coffee =  {description: 'Pay for their coffee.', related: 'friend', user_id: newUser.id}
+
+    //autofill acts
+    Acts.insert(cook)
+    Acts.insert(book)
+    Acts.insert(card)
+    Acts.insert(compliment)
+    Acts.insert(hug)
+    Acts.insert(coffee)
   })
   .catch( err => {
     return res.status(500).json( err )
