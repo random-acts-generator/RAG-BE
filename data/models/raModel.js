@@ -8,7 +8,6 @@ module.exports = {
   insert,
   update,
   remove,
-  generate
 }
 
 

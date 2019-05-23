@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
     tbl
     .integer('user_id', 128)
     .unsigned()
-    // .notNullable()
+    .notNullable()
     .references('id')
     .inTable('users')
     .onDelete('SET NULL')
