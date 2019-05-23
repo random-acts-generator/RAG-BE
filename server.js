@@ -23,9 +23,9 @@ const requestOptions = {
 
 //load routes
 server.use('/api/auth', authRoute);
-server.use('/api/users', requestOptions, userRoute);
-server.use('/api/contacts', requestOptions, contactRoute);
-server.use('/api/acts', requestOptions, raRoute);
+server.use('/api/users',  userRoute);
+server.use('/api/contacts',  contactRoute);
+server.use('/api/acts',  raRoute);
 
 //check if running properly
 server.get('/', (req, res) => {
