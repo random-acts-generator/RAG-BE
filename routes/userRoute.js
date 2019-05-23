@@ -19,7 +19,7 @@ const requestOptions = {
 
 //CRUD requests
 //get actions
-router.get('/', (req, res) => {
+router.get('/', requestOptions, (req, res) => {
   Users
   .get()
   .then( account => {
@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 })
 
 //by id
-router.get('/:id', (req, res) => {
+router.get('/:id', requestOptions, (req, res) => {
   //set ID
   const ID = req.params.id
   
@@ -51,7 +51,7 @@ router.get('/:id', (req, res) => {
 })
 
 //by phone number
-router.get('/search/num', (req, res) => {
+router.get('/search/num', requestOptions, (req, res) => {
   //set phone number
   const number = req.body.phone
   
@@ -71,7 +71,7 @@ router.get('/search/num', (req, res) => {
 })
 
 //by first and last name
-router.get('/search/name', (req, res) => {
+router.get('/search/name', requestOptions, (req, res) => {
   //set name credentials
   const first = req.body.first
   const last = req.body.last
@@ -92,7 +92,7 @@ router.get('/search/name', (req, res) => {
 })
 
 //get contacts
-router.get('/:id/contacts', (req, res) => {
+router.get('/:id/contacts', requestOptions, (req, res) => {
   //set ID
   const ID = req.params.id
   
@@ -112,7 +112,7 @@ router.get('/:id/contacts', (req, res) => {
 })
 
 //get acts
-router.get('/:id/acts', (req, res) => {
+router.get('/:id/acts', requestOptions, (req, res) => {
   //set ID
   const ID = req.params.id
   
@@ -132,7 +132,7 @@ router.get('/:id/acts', (req, res) => {
 })
 
 //update request
-router.put('/:id', (req, res) => {
+router.put('/:id', requestOptions, (req, res) => {
   //set ID
   const ID = req.params.id
   
@@ -159,7 +159,7 @@ router.put('/:id', (req, res) => {
   })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', requestOptions, (req, res) => {
   //set ID
   const ID = req.params.id
   

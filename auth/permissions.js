@@ -11,7 +11,7 @@ module.exports = {
 //the authentication function 
 function permissions(req, res, next) {
   //grab permission from the headers
-  const token = req.get('Permission');
+  const token = req.get('Authorization');
 
   if(token) {
     jwt.verify(token, ket, (err, decode) => {
