@@ -24,9 +24,9 @@ function getById(identifier) {
   .first()
 }
 
-function insert(user) { 
+function insert(act) { 
   return db('acts')
-  .insert( user )
+  .insert( act, 'id' )
   .then( ids => {
     return getById(ids[0])
   })
