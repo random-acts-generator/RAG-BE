@@ -62,7 +62,7 @@ router.post('/', (req, res) => {
   }
 
   Contacts
-  .insert(newContact, 'id')
+  .insert(newContact)
   .then( contact => {
     res.status(201).json( contact )
   })
