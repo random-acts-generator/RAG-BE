@@ -25,7 +25,7 @@ function getById(identifier) {
 
 function insert(user) { 
   return db('contacts')
-  .insert( user )
+  .insert( user, 'id')
   .then( ids => {
     console.log(ids[0])
     return getById(ids[0])

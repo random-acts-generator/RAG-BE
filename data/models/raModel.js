@@ -26,7 +26,7 @@ function getById(identifier) {
 
 function insert(user) { 
   return db('acts')
-  .insert( user )
+  .insert( user, 'id' )
   .then( ids => {
     return getById(ids[0])
   })
