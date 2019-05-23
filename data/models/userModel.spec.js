@@ -18,7 +18,7 @@ describe('User model', () => {
       expect(test2.first).toBe('jane')
     
       let test3= await Users.insert({ first:'joseph', last:'brim', phone:'554-555-5555', email:'take@me.com', password:'passed'})
-      expect(test2.first).toBe('jane')
+      expect(test3.first).toBe('joseph')
       
       const accounts = await db('users');
 
@@ -69,8 +69,7 @@ describe('User model', () => {
 
   describe('update()', () => {
     it('should update the phone number', async () => {
-      let update = await Users.update('2', {phone:'333-444-5656'});
-      console.log('item', update)
+      let update = await Users.update(2, {phone:'333-444-5656'});
       expect(update.phone).toBe('333-444-5656');
     })
   })
@@ -88,6 +87,20 @@ describe('User model', () => {
     it('should bring back only 1 user based on the unique email identifier', async () => {
       let account = await Users.loginCheck('take@me.com');
       expect(account.first).toBe('joseph')
+    })
+  })
+
+  describe('userContacts', () => {
+    it('should return an empty array', async () => {
+      let test = await Users.userContacts(1)
+      expect(test).toHaveLength(0)
+    })
+  })
+
+  describe('userActs', () => {
+    it('should return an empty array', async () => {
+      let test = await Users.userActs(1)
+      expect(test).toHaveLength(0)
     })
   })
 });

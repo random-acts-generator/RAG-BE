@@ -10,7 +10,9 @@ module.exports = {
   insert,
   update,
   remove,
-  loginCheck
+  loginCheck,
+  userContacts,
+  userActs
 }
 
 
@@ -61,8 +63,8 @@ function update(identifier, change) {
   return db('users')
   .where({ id: identifier })
   .update(change)
-  .then( ids => {
-    return getById(ids[0])
+  .then( () => {
+    return getById(identifier)
   })
 }
 
@@ -76,4 +78,27 @@ function loginCheck(em) {
   return db('users')
   .where({ email: em })
   .first()
+}
+
+// function userContacts(identifier) {
+//   let user = db('users')
+
+//   if (identifier) {
+//     user.where('id', identifier).first();
+    
+//     const data = [user, 'contacts:', findContacts(identifier)]
+//     return Promise.all(data)
+//   }
+// }
+
+function userContacts(identifier) {
+  return db('contacts')
+  .where('user_id', identifier)
+  .then( people => people.map(person => { return {...person}}))
+}
+
+function userActs(identifier) {
+  return db('acts')
+  .where('user_id', identifier)
+  .then( acts => acts.map(act => { return {...act}}))
 }

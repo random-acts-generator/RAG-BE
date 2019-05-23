@@ -51,9 +51,9 @@ router.get('/:id', (req, res) => {
 })
 
 //by phone number
-router.get('/:id', (req, res) => {
+router.get('/search/num', (req, res) => {
   //set phone number
-  const number = req.params.phone
+  const number = req.body.phone
   
   Users
   .getByNumber(number)
@@ -71,19 +71,59 @@ router.get('/:id', (req, res) => {
 })
 
 //by first and last name
-router.get('/:id', (req, res) => {
+router.get('/search/name', (req, res) => {
   //set name credentials
-  const first = req.params.first
-  const last = req.params.last
+  const first = req.body.first
+  const last = req.body.last
   
   Users
   .getByName(first, last)
   .then( account => {
-    if(account === undefined) {
+    if(account === undefined || account.length === 0) {
       return missingError(res);
     }
     else {
       return res.status(200).json({ account });
+    }
+  })
+  .catch( err => {
+    return newError( 500, err, res );
+  })
+})
+
+//get contacts
+router.get('/:id/contacts', (req, res) => {
+  //set ID
+  const ID = req.params.id
+  
+  Users
+  .userContacts(ID)
+  .then( contacts => {
+    if(contacts === undefined) {
+      return missingError(res);
+    }
+    else {
+      return res.status(200).json({ contacts });
+    }
+  })
+  .catch( err => {
+    return newError( 500, err, res );
+  })
+})
+
+//get acts
+router.get('/:id/acts', (req, res) => {
+  //set ID
+  const ID = req.params.id
+  
+  Users
+  .userActs(ID)
+  .then( acts => {
+    if(acts === undefined) {
+      return missingError(res);
+    }
+    else {
+      return res.status(200).json({ acts });
     }
   })
   .catch( err => {
@@ -107,7 +147,6 @@ router.put('/:id', (req, res) => {
   Users
   .update(ID, newAccount) 
   .then( account => {
-    console.log(account)
     if(account === undefined) {
     return missingError(res);
     }
